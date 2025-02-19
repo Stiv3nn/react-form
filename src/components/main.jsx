@@ -1,26 +1,58 @@
 import { useState } from 'react';
 
-const materie = ["storia", "letteratura", "filosofia", "matematica", "fisica"]
-// componente
+const materieScolastiche = [
+
+    "storia",
+    "letteratura", 
+    "filosofia", 
+    "matematica", 
+    "fisica",
+    "geografia",
+    "psicologia",
+    "chimica"
+];
+
 export default function Main() {
 
-    const [firstName, setFirstName] = useState('Stefano');
+    const [newSubject, setNewSubjects] = useState('');
 
-    const handleSubmit = event => {
+    const [subjetcs, setSubjects] = useState(materieScolastiche);
+
+    const addSubject = event => {
         event.preventDefault();
-        console.log('Il nome inviato è:' + firstName)
+        const updatedSubjects = [...subjetcs, newSubject];
+        setSubjects(updatedSubjects);
+        setNewSubjects('');
     }
-    function stampaLista() {
-        return materie.map(lista => {
-            return <li>{lista}</li>
-        }
+    const removeSubject = i => {
+        const updatedSubjects = subjetcs.filter((subjetcs, index) => {
+            return index !== i
+        });
+        setSubjects(updatedSubjects);
+    }
 
-        )
-    }
     return (
         <>
-           
-            {stampaLista()}
+         
+         {subjetcs.lenght === 0 ? <h2>La tua lista è vuota</h2> :
+         
+         <ul class="subjects-list">
+         {
+            subjetcs.map((book, bookindex) => (
+                <li key = {bookindex}>{book}
+                <button onClick={() => removeSubject(bookindex)}>
+                Elimina
+                </button>
+                </li>))
+         }
+            </ul>}
+
+            <form onSubmit={addSubject}>
+            <input type="text" value={newSubject}
+                onChange={event => { setNewSubjects(event.target.value) }} />
+            <button>Aggiungi subject</button>
+            </form>
+        
         </>
     )
 }
